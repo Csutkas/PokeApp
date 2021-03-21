@@ -26,7 +26,7 @@ const TypeScreen = ( {navigation} ) => {
     const [selectedType, setSelectedType] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
 
-    const [pokemons, setPokemons] = useState()    
+    const [pokemons, setPokemons] = useState()
     const [searchPokemons, setSearchPokemons] = useState()    
     const [selectedPokemon, setSelectedPokemon] = useState(null)
 
@@ -193,10 +193,11 @@ const TypeScreen = ( {navigation} ) => {
             return (
                 <TouchableOpacity
                     style={{ padding: 10, flexDirection: 'row' }}
-                    onPress={() => {                    
+                    onPress={() => {  
+                        navigation.navigate('Details', { url: item.url})
                     }}
                 >                    
-                    <Text style={{  }}>{item.name}</Text>
+                    <Text style={{  }}>{item.name}</Text>                    
                 </TouchableOpacity>
             )
         }
@@ -230,8 +231,7 @@ const TypeScreen = ( {navigation} ) => {
             return item.name.toLowerCase().includes(search.toLowerCase());
             }).map(function({ name}){
                 return {name};
-            });
-            console.log(searchData);
+            });            
         } else {
             searchData = searchPokemons
         }
@@ -253,13 +253,7 @@ const TypeScreen = ( {navigation} ) => {
                     showCancel
                 />
             </View>
-            {renderPokemons()}
-
-            <TouchableOpacity                 
-                onPress={() => navigation.navigate('Details')}
-            >                            
-                <Text>Details screen</Text>                
-            </TouchableOpacity>
+            {renderPokemons()}            
         </SafeAreaView>
     )
 }
