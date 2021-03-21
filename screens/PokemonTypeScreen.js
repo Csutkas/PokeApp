@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 
 import { TouchableOpacity} from 'react-native-gesture-handler'
-import { SearchBar } from 'react-native-elements'
+import { colors, SearchBar } from 'react-native-elements'
 import CheckBox from '@react-native-community/checkbox'
 
 /* Constant imports */
@@ -76,8 +76,7 @@ const TypeScreen = ( {navigation, route} ) => {
     /** Get parameter from Pokemon screen */
     useEffect(() => {
         if (route.params?.catch) {
-            setCatchedPokemons(route.params?.catch)
-            
+            setCatchedPokemons(route.params?.catch)            
         }
       }, [route.params?.catch]);
 
@@ -85,36 +84,24 @@ const TypeScreen = ( {navigation, route} ) => {
     /** This function renders the pokemon type selection form */
     function renderTypeForm() {
         return (
-            <View
-                style={{            
-                    marginTop: SIZES.padding * 2,
-                    marginHorizontal: SIZES.padding * 2
-                    
-                }}
-            >
+            <View style={styles.typeScreenFormViewStyle}>
                 {/* Pokemon types */}
                 <View>
                     {/* Pokemnos Types Label */}
-                    <Text style={{ marginBottom: SIZES.padding, ...FONTS.h3, fontWeight: "300", paddingLeft: SIZES.padding * 0.2 }}>Select Pokemon Types:</Text>
+                    <Text style={styles.typeScreenPokemonTypesLabelStyle}>Select Pokemon Types:</Text>
 
                     {/* Pokemon Types Selection Form */}
-                    <View style={{flexDirection: 'row', justifyContent: 'center'}}>                        
+                    <View style={styles.typeScreenSelectionFormViewStyle}>                        
                         <TouchableOpacity
-                            style={{
-                                width: SIZES.width * 0.9,
-                                height: 50,                            
-                                borderColor: COLORS.gray,
-                                borderWidth: 1,
-                                borderRadius: SIZES.radius,
-                                flexDirection: 'row',
-                                justifyContent: 'space-between'                                                             
-                            }}
+                            style={styles.typeScreenFormTouchableStyle}
                             onPress={() => setModalVisible(true)}
-                        >                                            
-                            <View style={{ justifyContent: 'center', marginLeft: 20 }}>
-                                <Text style={{ ...FONTS.body2, color: COLORS.black, fontWeight: "500"}}>{selectedType?.name}</Text>
+                        >   
+                            {/* Form label */}                               
+                            <View style={styles.typeScreenFormLabelViewStyle}>
+                                <Text style={styles.typeScreenFormLabelStyle}>{selectedType?.name}</Text>
                             </View>
-
+                            
+                            {/* Form label icon */}
                             <View style={{ justifyContent: 'center', marginRight: 20 }}>                                
                                 <FontAwesome 
                                     name="chevron-down" 
@@ -130,20 +117,20 @@ const TypeScreen = ( {navigation, route} ) => {
     }
 
     /** This render funtion handles the pokemon types in a modal view */
-    function renderPokeTypesModal() {
+    function renderPokemonTypesModal() {
         const renderItem = ({item}) => {
             return (
                 <TouchableOpacity
-                    style={{ padding: SIZES.padding, flexDirection: 'row',borderBottomColor: COLORS.gray,
-                    borderBottomWidth: 0.5, }}
+                    style={styles.typeScreenModalItemTouchableStyle}
                     onPress={() => {                        
                         setSelectedType(item)                        
                         setModalVisible(false)                        
                     }}
-                >                    
-                    <Text
-                        style={{ color: COLORS.black, ...FONTS.body3}}
-                    >{item.name}</Text>
+                >   
+                    {/* Pokemon types from api call in modal */}                 
+                    <Text style={styles.typeScreenModalItemTextStyle}>
+                        {item.name}
+                    </Text>
                 </TouchableOpacity>
             )
         }
@@ -157,24 +144,16 @@ const TypeScreen = ( {navigation, route} ) => {
                 <TouchableWithoutFeedback
                     onPress={() => setModalVisible(false)}
                 >
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={styles.typeScreenModalStyle}>
                         <View
-                            style={{
-                                height: SIZES.height * 0.5,
-                                width: SIZES.width * 0.9,                                
-                                borderRadius: 5,
-                                backgroundColor: COLORS.mediumgray
-                            }}
+                            style={styles.typeScreenModalViewStyle}
                         >                               
                             <FlatList
                                 data={types}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.name}
                                 showsVerticalScrollIndicator={true}
-                                style={{
-                                    padding: SIZES.padding,
-                                    marginBottom: SIZES.padding,
-                                }}
+                                style={styles.typeScreenModalFlatListStyle}
                             />
                         </View>
                     </View>
@@ -187,7 +166,7 @@ const TypeScreen = ( {navigation, route} ) => {
     function renderCatch(pokemon) {        
         if (catchedPokemons.includes(pokemon)){
             return (
-                <Text style={{...FONTS.body3, color: COLORS.green}}>Catched</Text>
+                <Text style={styles.typeScreenCatchedLabelStyle}>Catched</Text>
             )
         }
     }
@@ -197,7 +176,7 @@ const TypeScreen = ( {navigation, route} ) => {
         const renderItem = ({item}) => {
             return (
                 <TouchableOpacity
-                    style={{ padding: SIZES.padding, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}
+                    style={styles.typeScreenPokemonLineTouchableStyle}
                     onPress={() => {  
                         navigation.navigate('Details', { url: item.url, catchedPokemons: catchedPokemons})
                     }}
@@ -205,12 +184,9 @@ const TypeScreen = ( {navigation, route} ) => {
                     <View style={{flexDirection: 'row'}}>
                         <Image
                             source={images.pokeball}
-                            style={{
-                                width: 30,
-                                height: 30
-                            }}
+                            style={styles.typeScreenPokemonLineImageStyle}
                         />
-                        <Text style={{ marginLeft: SIZES.padding * 1.5, ...FONTS.body2, fontWeight: "300", textTransform: 'capitalize'}}>{item.name}</Text>
+                        <Text style={styles.typeScreenPokemonLineTextStyle}>{item.name}</Text>
                     </View>               
                     
                     {renderCatch(item.name)}
@@ -220,27 +196,20 @@ const TypeScreen = ( {navigation, route} ) => {
 
         return (
             <View
-                style={{   
-                    marginBottom: SIZES.padding * 17,
-                    marginHorizontal: SIZES.padding 
-                }}    
+                style={styles.typeScreenPokemonLineViewStyle}    
             >
                 <FlatList
                     data={pokemons}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.name}
                     showsVerticalScrollIndicator={false}
-                    style={{
-                        marginTop: SIZES.padding,                        
-                    }}
+                    style={styles.typeScreenPokemonLineFlatListStyle}
                 />
             </View>
         )
     }
 
-    /**
-     * Searchbar filter function - filters the pokemons according to the given letters included in pokemnon name
-     */
+    /** Searchbar filter function - filters the pokemons according to the given letters included in pokemnon name */
     updateSearch = (search) => {
         if (search != '') {
             searchData = pokemons.filter(function(item){
@@ -255,14 +224,11 @@ const TypeScreen = ( {navigation, route} ) => {
         setPokemons(searchData)
     };
 
-    /**
-     * This function renders the searchbar for filter pokemons
-     * @returns 
-     */
+    /** This function renders the searchbar for filter pokemons */
     function renderSearchBar() {
         return (
-            <View style={{marginVertical: 10, flexDirection: 'row', alignItems:'center', marginHorizontal: SIZES.padding * 2}}>
-                <View style={{ width: SIZES.width * 0.75}}>
+            <View style={styles.typeScreenSearchViewStyle}>
+                <View style={styles.typeScreenSearchBarViewStyle}>
                     <SearchBar
                         placeholder="Search Pokemons.."
                         onChangeText={this.updateSearch}
@@ -281,36 +247,29 @@ const TypeScreen = ( {navigation, route} ) => {
         )
     }
 
-
-    
     /** This function renders the catched pokemons in case of checkbox checked */
     function renderCatchedPokemons() {        
         const renderItem = ({item}) => {
             return(
-                <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: SIZES.padding * 0.3}}>
+                <View style={styles.typeScreenCatchedViewStyle}>
                     <Image
                         source={images.green_pokeball}
-                        style={{
-                            width: 40,
-                            height: 40,
-                        }}
+                        style={styles.typeScreenCatchedImageStyle}
                     />
-                    <Text style={{marginLeft: SIZES.padding * 1.5, ...FONTS.body2, fontWeight: "300", textTransform: 'capitalize'}}>{item}</Text>    
+                    <Text style={styles.typeScreenPokemonLineTextStyle}>{item}</Text>    
                 </View>
-                
             )            
         }
     
         const renderCatchedPokemonList = () => {
             return(
                 <View>
-                    <Text style={{...FONTS.h3, fontWeight: "300", marginVertical: SIZES.padding, marginLeft: SIZES.padding * 0.3}}>Your catched pokemons:</Text>
+                    <Text style={styles.typeScreenCatchedTitleStyle}>Your catched pokemons:</Text>
                     <FlatList
                         data={catchedPokemons}
                         renderItem={renderItem}
                         keyExtractor={(item) => item.value}
-                        showsVerticalScrollIndicator={false}
-                        
+                        showsVerticalScrollIndicator={false}                        
                     />
                 </View>
             )
@@ -319,11 +278,10 @@ const TypeScreen = ( {navigation, route} ) => {
         if (toggleCheckBox == true) {
             return(
                 <View>
-                    <Text style={{ marginHorizontal: SIZES.padding * 2, marginTop: SIZES.padding}}>
+                    <Text style={styles.typeScreenNoCatchedTextStyle}>
                         {catchedPokemons.length > 0 ? renderCatchedPokemonList() : "No catched pokemons"}
                     </Text>
-                </View>                
-                
+                </View>                                
             )        
         }
     }
@@ -331,9 +289,7 @@ const TypeScreen = ( {navigation, route} ) => {
     /** This function renders the checkbox for enabling catched pokemon view */
     function renderCheckBox() {
         return (
-            <View
-                style={{marginHorizontal: 20}}
-            >
+            <View style={{marginHorizontal: 20}}>
                 <CheckBox
                     disabled={false}
                     value={false}                    
@@ -351,7 +307,7 @@ const TypeScreen = ( {navigation, route} ) => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightGray}}>
             {renderTypeForm()}            
-            {renderPokeTypesModal()}            
+            {renderPokemonTypesModal()}            
             {renderSearchBar()}            
             {renderCatchedPokemons()}
             {renderPokemons()}            
@@ -362,9 +318,118 @@ const TypeScreen = ( {navigation, route} ) => {
 
 /** Custom stylesheet for TypeScreen elements' style */
 const styles = StyleSheet.create({
-    typeScreenContainer: {        
+    typeScreenPokemonTypesLabelStyle:{ 
+        marginBottom: SIZES.padding, ...FONTS.h3, 
+        fontWeight: "300", 
+        paddingLeft: SIZES.padding * 0.2 
     },
-    
+    typeScreenFormViewStyle: {            
+        marginTop: SIZES.padding * 2,
+        marginHorizontal: SIZES.padding * 2                    
+    },
+    typeScreenSelectionFormViewStyle: {
+        flexDirection: 'row', 
+        justifyContent: 'center'
+    },
+    typeScreenFormTouchableStyle: {
+        width: SIZES.width * 0.9,
+        height: 50,                            
+        borderColor: COLORS.gray,
+        borderWidth: 1,
+        borderRadius: SIZES.radius,
+        flexDirection: 'row',
+        justifyContent: 'space-between'                                                             
+    },
+    typeScreenFormLabelViewStyle: { 
+        justifyContent: 'center', 
+        marginLeft: 20 
+    },
+    typeScreenFormLabelStyle: { 
+        ...FONTS.body2, 
+        color: COLORS.black, 
+        fontWeight: "500"
+    },
+    typeScreenModalItemTouchableStyle: { 
+        padding: SIZES.padding, 
+        flexDirection: 'row',
+        borderBottomColor: COLORS.lightGray,
+        borderBottomWidth: 0.5, 
+    },
+    typeScreenModalItemTextStyle: {
+         color: COLORS.black, 
+         ...FONTS.body3
+        },
+    typeScreenModalStyle: { 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+    },
+    typeScreenModalViewStyle: {
+        height: SIZES.height * 0.52,
+        width: SIZES.width * 0.9,
+        borderRadius: 5,
+        backgroundColor: COLORS.lightRed
+    },
+    typeScreenModalFlatListStyle: {
+        padding: SIZES.padding,
+        marginBottom: SIZES.padding,
+    },
+    typeScreenCatchedLabelStyle: {
+        ...FONTS.body3, 
+        color: COLORS.green
+    },
+    typeScreenPokemonLineTouchableStyle: { 
+        padding: SIZES.padding, 
+        flexDirection: 'row', 
+        justifyContent: 'space-between', 
+        alignItems: 'center' 
+    },
+    typeScreenPokemonLineImageStyle: {
+        width: 30,
+        height: 30
+    },
+    typeScreenPokemonLineTextStyle: { 
+        marginLeft: SIZES.padding * 1.5, 
+        ...FONTS.body2, fontWeight: "300", 
+        textTransform: 'capitalize'
+    },
+    typeScreenPokemonLineViewStyle: {   
+        marginBottom: SIZES.padding * 17,
+        marginHorizontal: SIZES.padding 
+    },
+    typeScreenPokemonLineFlatListStyle: {
+        marginTop: SIZES.padding,
+    },
+    typeScreenSearchViewStyle: {
+        marginVertical: 10, 
+        flexDirection: 'row', 
+        alignItems:'center',
+         marginHorizontal: SIZES.padding * 2
+    },
+    typeScreenSearchBarViewStyle: { 
+        width: SIZES.width * 0.75
+    },
+    typeScreenCatchedViewStyle: { 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        marginVertical: SIZES.padding * 0.35
+    },
+    typeScreenCatchedImageStyle: {
+        width: 40,
+        height: 40,
+    },
+    typeScreenCatchedTitleStyle: {
+        ...FONTS.h3, 
+        fontWeight: "300", 
+        marginVertical: SIZES.padding, 
+        marginLeft: SIZES.padding * 0.3
+    },
+    typeScreenNoCatchedTextStyle: { 
+        marginHorizontal: SIZES.padding * 2, 
+        marginTop: SIZES.padding,
+        ...FONTS.body3,
+        color: COLORS.lightblack,
+    }
 })
 
 export default TypeScreen;
