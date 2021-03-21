@@ -6,11 +6,12 @@ import {
     StyleSheet,
     TouchableWithoutFeedback,
     Modal,
-    FlatList
+    FlatList,    
 } from "react-native"
 
 import { TouchableOpacity} from 'react-native-gesture-handler'
 import { SearchBar } from 'react-native-elements';
+import CheckBox from '@react-native-community/checkbox';
 
 /**
  * This screen renders the pokemons by types
@@ -30,6 +31,7 @@ const TypeScreen = ( {navigation, route} ) => {
     const [searchPokemons, setSearchPokemons] = useState()    
     const [catchedPokemons, setCatchedPokemons] = useState([])        
     
+    const [toggleCheckBox, setToggleCheckBox] = useState(false)
     /**
      * This useEffect call the type API
      */
@@ -184,7 +186,7 @@ const TypeScreen = ( {navigation, route} ) => {
             )
         }
     }
-    
+
     /**
      * This function renders the pokemon names according the selected types
      * @returns 
@@ -260,9 +262,37 @@ const TypeScreen = ( {navigation, route} ) => {
         )
     }
 
+    function renderCatchedPokemons() {
+        if (toggleCheckBox == true) {
+            return(
+                <Text>{catchedPokemons}</Text>            
+            )
+        }
+    }
+    function renderCheckBox() {
+        return (
+            <View
+                style={{marginHorizontal: 20}}
+            >
+                <CheckBox
+                    disabled={false}
+                    value={false}                    
+                    onAnimationType='fill'
+                    offAnimationType='fill'
+                    animationDuration={0.1}
+                    boxType='square'
+                    lineWidth={1.5}
+                    onValueChange={(newValue) => setToggleCheckBox(newValue)}                    
+                />
+            </View>
+            
+        )
+    }
+
     return (
-        <SafeAreaView style={{flex: 1}}>
-            <Text>{catchedPokemons}</Text>  
+        <SafeAreaView style={{flex: 1}}>            
+            {renderCatchedPokemons()}
+            {renderCheckBox()}
             {renderTypeForm()}            
             {renderPokeTypesModal()}
             {renderSearchBar()}
