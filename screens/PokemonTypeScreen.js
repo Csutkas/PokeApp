@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+    SafeAreaView,
     View,
     Text,    
     StyleSheet,
@@ -9,6 +10,7 @@ import {
 } from "react-native"
 
 import { TouchableOpacity} from 'react-native-gesture-handler'
+import { SearchBar } from 'react-native-elements';
 
 /**
  * This screen renders the pokemons by types
@@ -24,7 +26,7 @@ const TypeScreen = ( {navigation} ) => {
     const [selectedType, setSelectedType] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
 
-    const [pokemons, setPokemons] = useState()
+    const [pokemons, setPokemons] = useState()    
     const [selectedPokemon, setSelectedPokemon] = useState(null)
 
     /**
@@ -54,8 +56,8 @@ const TypeScreen = ( {navigation} ) => {
             })
     }, [])
 
-    console.log("Pokemon types:")
-    console.log(types)
+    //console.log("Pokemon types:")
+    //console.log(types)
 
 
      /**
@@ -72,12 +74,13 @@ const TypeScreen = ( {navigation} ) => {
                         url: item.pokemon.url
                     }
                 })
-                setPokemons(pokeTypeData)             
+                setPokemons(pokeTypeData)  
+                setSearchPokemons(pokemons)           
                
             })
     }
-    console.log("Pokemons:")
-    console.log(pokemons)
+    //console.log("Pokemons:")
+    //console.log(pokemons)
 
 
 
@@ -134,9 +137,8 @@ const TypeScreen = ( {navigation} ) => {
             return (
                 <TouchableOpacity
                     style={{ padding: 10, flexDirection: 'row' }}
-                    onPress={() => {
-                        console.log("Anyáááááád")
-                        setSelectedType(item)
+                    onPress={() => {                        
+                        setSelectedType(item)                        
                         setModalVisible(false)
                         callPokemonTypeAPI()
                     }}
@@ -218,10 +220,32 @@ const TypeScreen = ( {navigation} ) => {
         )
     }
 
+    updateSearch = (search) => {
+
+        searchData = pokemons.filter(function(item){
+        return item.name.toLowerCase().includes(search.toLowerCase());
+        }).map(function({ name}){
+            return {name};
+        });
+        console.log(searchData);
+            
+        setPokemons(searchData)
+    };
+
     return (
-        <View style={{flex: 1}}>                       
-            {renderTypeForm()}
+        <SafeAreaView style={{flex: 1}}>            
+            {renderTypeForm()}            
             {renderPokeTypesModal()}
+            <View style={{marginVertical: 10}}>
+                <SearchBar
+                    placeholder="Search Pokemons.."
+                    onChangeText={this.updateSearch}
+                    value={pokemons}
+                    lightTheme
+                    clearIcon
+                    showCancel
+                />
+            </View>
             {renderPokemons()}
 
             <TouchableOpacity                 
@@ -229,7 +253,7 @@ const TypeScreen = ( {navigation} ) => {
             >                            
                 <Text>Details screen</Text>                
             </TouchableOpacity>
-        </View>
+        </SafeAreaView>
     )
 }
 
