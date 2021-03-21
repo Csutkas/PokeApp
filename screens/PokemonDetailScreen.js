@@ -66,6 +66,31 @@ const DetailScreen = ({ route, navigation }) => {
             </View>
         )
     }
+
+    function handlePokemonCatch() {
+        if (catchPokemon.includes(detailedPokemon?.name)){
+            return (
+                <TouchableOpacity 
+                    style={{ marginHorizontal: 20, marginVertical: 20}}                                
+                    onPress={() => {                    
+                        setCatchPokemon(catchPokemon.filter(catchPokemon => catchPokemon !== detailedPokemon?.name))                    
+                    }}                
+                >
+                    <Text>Release</Text>
+                </TouchableOpacity>
+            )
+        } else {
+            return (
+                <TouchableOpacity 
+                    style={{ marginHorizontal: 20, marginVertical: 20}}                                
+                    onPress={() => setCatchPokemon(catchPokemon => [...catchPokemon, detailedPokemon?.name])}                
+                >
+                    <Text>Catch</Text>
+                </TouchableOpacity>
+            )
+        }
+    }
+
     function renderPokemonDetails() {
         return(
             <View style={{ flexDirection: 'column', marginHorizontal: 20}}>
@@ -94,12 +119,7 @@ const DetailScreen = ({ route, navigation }) => {
 
     return (
         <View style={{flex: 1}}>           
-            <TouchableOpacity 
-                style={{ marginHorizontal: 20, marginVertical: 20}}                                
-                onPress={() => setCatchPokemon(catchPokemon => [...catchPokemon, detailedPokemon?.name])}                
-            >
-                <Text>Catch</Text>
-            </TouchableOpacity>
+            {handlePokemonCatch()}            
             {renderPokemonDetails()}
             <Text>Catched pokemons:</Text>
             <Text>{catchPokemon}</Text>
