@@ -83,7 +83,9 @@ const DetailScreen = ({ route, navigation }) => {
             return (
                 <TouchableOpacity 
                     style={{ marginHorizontal: 20, marginVertical: 20}}                                
-                    onPress={() => setCatchPokemon(catchPokemon => [...catchPokemon, detailedPokemon?.name])}                
+                    onPress={() => {
+                        setCatchPokemon(catchPokemon => [...catchPokemon, detailedPokemon?.name])                        
+                    }}
                 >
                     <Text>Catch</Text>
                 </TouchableOpacity>
@@ -124,7 +126,7 @@ const DetailScreen = ({ route, navigation }) => {
             <Text>Catched pokemons:</Text>
             <Text>{catchPokemon}</Text>
             <Button
-                title="Done"
+                title="Go back"
                 onPress={() => {
                 // Pass params back to type screen
                 navigation.navigate('Type', { catch: catchPokemon });

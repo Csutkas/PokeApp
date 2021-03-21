@@ -40,6 +40,7 @@ const AppStack = () => {
                 component={DetailScreen} 
                 options={{
                     title: "Pokemon Details",
+                    headerLeft: null,
                 }}
             />
         </Stack.Navigator>

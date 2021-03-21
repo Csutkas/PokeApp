@@ -265,8 +265,8 @@ const TypeScreen = ( {navigation, route} ) => {
     function renderCatchedPokemons() {
         if (toggleCheckBox == true) {
             return(
-                <Text>{catchedPokemons}</Text>            
-            )
+                <Text>{catchedPokemons.length > 0 ? catchedPokemons : "No catched pokemons"}</Text>
+            )        
         }
     }
     function renderCheckBox() {
