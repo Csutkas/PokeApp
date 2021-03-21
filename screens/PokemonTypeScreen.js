@@ -221,7 +221,8 @@ const TypeScreen = ( {navigation, route} ) => {
         return (
             <View
                 style={{   
-                    marginBottom: SIZES.padding * 17
+                    marginBottom: SIZES.padding * 17,
+                    marginHorizontal: SIZES.padding 
                 }}    
             >
                 <FlatList
@@ -303,7 +304,7 @@ const TypeScreen = ( {navigation, route} ) => {
         const renderCatchedPokemonList = () => {
             return(
                 <View>
-                    <Text style={{...FONTS.h3, fontWeight: "300", marginVertical: SIZES.padding}}>Your catched pokemons:</Text>
+                    <Text style={{...FONTS.h3, fontWeight: "300", marginVertical: SIZES.padding, marginLeft: SIZES.padding * 0.3}}>Your catched pokemons:</Text>
                     <FlatList
                         data={catchedPokemons}
                         renderItem={renderItem}
