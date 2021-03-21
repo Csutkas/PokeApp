@@ -23,7 +23,7 @@ const TypeScreen = ( {navigation} ) => {
      * Hooks
      */
     const [types, setTypes] = useState()
-    const [selectedType, setSelectedType] = useState(null)
+    const [selectedType, setSelectedType] = useState("normal")
     const [modalVisible, setModalVisible] = useState(false)
 
     const [pokemons, setPokemons] = useState()
@@ -47,24 +47,14 @@ const TypeScreen = ( {navigation} ) => {
 
                 setTypes(typeData)
 
-                if(typeData.length > 0) {
-                    let defaultData = typeData.filter(t => t.name == "normal")
-
-                    if(defaultData.length > 0) {
-                        setSelectedType(defaultData[0])
-                    }
-                }
+                
             })
     }, [])
 
-    //console.log("Pokemon types:")
-    //console.log(types)
-
-
      /**
-     * This function call the selected type API
+     * This useEffect call the selected type API only if type changed
      */
-    function callPokemonTypeAPI() {
+    useEffect(() =>{
         fetch(selectedType.url)
             .then(response => response.json())
             .then(data => {
@@ -76,14 +66,9 @@ const TypeScreen = ( {navigation} ) => {
                     }
                 })
                 setPokemons(pokeTypeData)  
-                setSearchPokemons(pokeTypeData)           
-               
+                setSearchPokemons(pokeTypeData)
             })
-    }
-    //console.log("Pokemons:")
-    //console.log(pokemons)
-
-
+    }, [selectedType])
 
     /**
      * This function renders the pokemon type selection form
@@ -141,7 +126,7 @@ const TypeScreen = ( {navigation} ) => {
                     onPress={() => {                        
                         setSelectedType(item)                        
                         setModalVisible(false)
-                        callPokemonTypeAPI()
+                        //callPokemonTypeAPI()
                     }}
                 >                    
                     <Text>{item.name}</Text>
@@ -239,10 +224,12 @@ const TypeScreen = ( {navigation} ) => {
         setPokemons(searchData)
     };
 
-    return (
-        <SafeAreaView style={{flex: 1}}>            
-            {renderTypeForm()}            
-            {renderPokeTypesModal()}
+    /**
+     * This function renders the searchbar for filter pokemons
+     * @returns 
+     */
+    function renderSearchBar() {
+        return (
             <View style={{marginVertical: 10}}>
                 <SearchBar
                     placeholder="Search Pokemons.."
@@ -253,6 +240,14 @@ const TypeScreen = ( {navigation} ) => {
                     showCancel
                 />
             </View>
+        )
+    }
+
+    return (
+        <SafeAreaView style={{flex: 1}}>            
+            {renderTypeForm()}            
+            {renderPokeTypesModal()}
+            {renderSearchBar()}
             {renderPokemons()}            
         </SafeAreaView>
     )
