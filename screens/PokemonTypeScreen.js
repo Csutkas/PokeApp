@@ -177,6 +177,14 @@ const TypeScreen = ( {navigation, route} ) => {
         )
     }
 
+    function renderCatch(pokemon) {        
+        if (catchedPokemons.includes(pokemon)){
+            return (
+                <Text>Catched</Text>
+            )
+        }
+    }
+    
     /**
      * This function renders the pokemon names according the selected types
      * @returns 
@@ -191,7 +199,7 @@ const TypeScreen = ( {navigation, route} ) => {
                     }}
                 >                    
                     <Text style={{  }}>{item.name}</Text>                    
-                    
+                    {renderCatch(item.name)}
                 </TouchableOpacity>
             )
         }
