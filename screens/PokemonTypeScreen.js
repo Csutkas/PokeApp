@@ -17,7 +17,7 @@ import { SearchBar } from 'react-native-elements';
  * @param {* navigation} param0 
  * @returns 
  */
-const TypeScreen = ( {navigation} ) => {
+const TypeScreen = ( {navigation, route} ) => {
 
     /**
      * Hooks
@@ -28,8 +28,8 @@ const TypeScreen = ( {navigation} ) => {
 
     const [pokemons, setPokemons] = useState()
     const [searchPokemons, setSearchPokemons] = useState()    
-    const [selectedPokemon, setSelectedPokemon] = useState(null)
-
+    const [catchedPokemons, setCatchedPokemons] = useState([])        
+    
     /**
      * This useEffect call the type API
      */
@@ -44,10 +44,7 @@ const TypeScreen = ( {navigation} ) => {
                         url: item.url
                     }
                 })
-
-                setTypes(typeData)
-
-                
+                setTypes(typeData)                
             })
     }, [])
 
@@ -69,6 +66,18 @@ const TypeScreen = ( {navigation} ) => {
                 setSearchPokemons(pokeTypeData)
             })
     }, [selectedType])
+
+    /**
+     * Get parameter from Pokemon screen
+     */
+    useEffect(() => {
+        if (route.params?.catch) {
+            setCatchedPokemons(route.params?.catch)
+            
+        }
+      }, [route.params?.catch]);
+    console.log("Cage Typescreen:")
+    console.log(catchedPokemons)
 
     /**
      * This function renders the pokemon type selection form
@@ -176,12 +185,13 @@ const TypeScreen = ( {navigation} ) => {
         const renderItem = ({item}) => {
             return (
                 <TouchableOpacity
-                    style={{ padding: 10, flexDirection: 'row' }}
+                    style={{ padding: 10, flexDirection: 'row', justifyContent: 'space-between' }}
                     onPress={() => {  
-                        navigation.navigate('Details', { url: item.url})
+                        navigation.navigate('Details', { url: item.url, catchedPokemons: catchedPokemons})
                     }}
                 >                    
                     <Text style={{  }}>{item.name}</Text>                    
+                    
                 </TouchableOpacity>
             )
         }
@@ -243,7 +253,8 @@ const TypeScreen = ( {navigation} ) => {
     }
 
     return (
-        <SafeAreaView style={{flex: 1}}>            
+        <SafeAreaView style={{flex: 1}}>
+            <Text>{catchedPokemons}</Text>  
             {renderTypeForm()}            
             {renderPokeTypesModal()}
             {renderSearchBar()}

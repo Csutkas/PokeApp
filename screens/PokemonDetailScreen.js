@@ -4,17 +4,21 @@ import {
     Text,    
     StyleSheet,
     Image,
-    FlatList
+    FlatList,
+    Button
 } from "react-native"
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const DetailScreen = ({ route, navigation }) => {
 
-    const { url } = route.params;
+    const { url, catchedPokemons } = route.params;
 
     /**
      * Hooks
      */
     const [detailedPokemon, setDetailedPokemon] = useState()
+    const [catchPokemon, setCatchPokemon] = useState([])
+    
 
     /**
      * This useEffect call the pokemon API
@@ -25,10 +29,11 @@ const DetailScreen = ({ route, navigation }) => {
             .then(data => {                           
                 setDetailedPokemon(data)                
             })
+        setCatchPokemon(catchedPokemons)        
     }, [])
 
-    console.log("Pokemon detailed:")
-    //console.log(detailedPokemon.abilities)
+    console.log("Cage Detailedscreen:")    
+    console.log(catchPokemon)
 
     function renderNotHiddenAbilities() {        
         const renderItem = ({item}) => {
@@ -37,7 +42,7 @@ const DetailScreen = ({ route, navigation }) => {
                     <View
                         style={{ padding: 10, flexDirection: 'row' }}                    
                     >                    
-                        <Text>{item.is_hidden ? item.ability.name : ""}</Text>
+                        <Text>{item.ability.name}</Text>
                     </View>
                 )
             } else {
@@ -89,8 +94,23 @@ const DetailScreen = ({ route, navigation }) => {
 
     return (
         <View style={{flex: 1}}>           
-            
+            <TouchableOpacity 
+                style={{ marginHorizontal: 20, marginVertical: 20}}                                
+                onPress={() => setCatchPokemon(catchPokemon => [...catchPokemon, detailedPokemon?.name])}                
+            >
+                <Text>Catch</Text>
+            </TouchableOpacity>
             {renderPokemonDetails()}
+            <Text>Catched pokemons:</Text>
+            <Text>{catchPokemon}</Text>
+            <Button
+                title="Done"
+                onPress={() => {
+                // Pass params back to type screen
+                navigation.navigate('Type', { catch: catchPokemon });
+                }}
+            />
+
         </View>        
     )
 }
