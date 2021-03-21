@@ -3,7 +3,8 @@ import {
     View,
     Text,    
     StyleSheet,
-    Image
+    Image,
+    FlatList
 } from "react-native"
 
 const DetailScreen = ({ route, navigation }) => {
@@ -29,6 +30,37 @@ const DetailScreen = ({ route, navigation }) => {
     console.log("Pokemon detailed:")
     //console.log(detailedPokemon.abilities)
 
+    function renderNotHiddenAbilities() {        
+        const renderItem = ({item}) => {
+            if (item.is_hidden == true) {
+                return (
+                    <View
+                        style={{ padding: 10, flexDirection: 'row' }}                    
+                    >                    
+                        <Text>{item.is_hidden ? item.ability.name : ""}</Text>
+                    </View>
+                )
+            } else {
+                return
+            }        
+            
+        }
+
+        return (
+            <View>
+                <FlatList
+                    data={detailedPokemon?.abilities}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.slot}
+                    showsVerticalScrollIndicator={false}
+                    style={{
+                        padding: 10,
+                        marginBottom: 10,
+                    }}
+                />
+            </View>
+        )
+    }
     function renderPokemonDetails() {
         return(
             <View style={{ flexDirection: 'column', marginHorizontal: 20}}>
@@ -49,6 +81,7 @@ const DetailScreen = ({ route, navigation }) => {
                 <Text>
                     {detailedPokemon?.weight}
                 </Text>
+                {renderNotHiddenAbilities()}
             </View>
         )
 

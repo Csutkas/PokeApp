@@ -125,8 +125,7 @@ const TypeScreen = ( {navigation} ) => {
                     style={{ padding: 10, flexDirection: 'row' }}
                     onPress={() => {                        
                         setSelectedType(item)                        
-                        setModalVisible(false)
-                        //callPokemonTypeAPI()
+                        setModalVisible(false)                        
                     }}
                 >                    
                     <Text>{item.name}</Text>
