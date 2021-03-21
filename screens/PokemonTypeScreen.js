@@ -27,6 +27,7 @@ const TypeScreen = ( {navigation} ) => {
     const [modalVisible, setModalVisible] = useState(false)
 
     const [pokemons, setPokemons] = useState()    
+    const [searchPokemons, setSearchPokemons] = useState()    
     const [selectedPokemon, setSelectedPokemon] = useState(null)
 
     /**
@@ -75,7 +76,7 @@ const TypeScreen = ( {navigation} ) => {
                     }
                 })
                 setPokemons(pokeTypeData)  
-                setSearchPokemons(pokemons)           
+                setSearchPokemons(pokeTypeData)           
                
             })
     }
@@ -220,15 +221,21 @@ const TypeScreen = ( {navigation} ) => {
         )
     }
 
+    /**
+     * Searchbar filter function - filters the pokemons according to the given letters included in pokemnon name
+     */
     updateSearch = (search) => {
+        if (search != '') {
+            searchData = pokemons.filter(function(item){
+            return item.name.toLowerCase().includes(search.toLowerCase());
+            }).map(function({ name}){
+                return {name};
+            });
+            console.log(searchData);
+        } else {
+            searchData = searchPokemons
+        }
 
-        searchData = pokemons.filter(function(item){
-        return item.name.toLowerCase().includes(search.toLowerCase());
-        }).map(function({ name}){
-            return {name};
-        });
-        console.log(searchData);
-            
         setPokemons(searchData)
     };
 
