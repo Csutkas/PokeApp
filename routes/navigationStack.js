@@ -4,11 +4,12 @@ import React from 'react';
 /* Navigation imports */
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 
 /* Screen imports */
 import TypeScreen from "../screens/PokemonTypeScreen"
 import DetailScreen from "../screens/PokemonDetailScreen"
+
+import { COLORS, SIZES, FONTS } from '../constants/'
 
 const Stack = createStackNavigator();
 
@@ -19,11 +20,11 @@ const AppStack = () => {
             initialRouteName="Type"
             screenOptions={{
                 headerStyle: {
-                    backgroundColor: 'blue'
+                    backgroundColor: COLORS.red,                                        
                 },
-                headerTintColor: 'white',
+                headerTintColor: COLORS.lightGray,
                 headerTitleStyle: {
-                    
+                    fontSize: SIZES.h3
                 }
             }}            
         >   

@@ -32,9 +32,6 @@ const DetailScreen = ({ route, navigation }) => {
         setCatchPokemon(catchedPokemons)        
     }, [])
 
-    console.log("Cage Detailedscreen:")    
-    console.log(catchPokemon)
-
     function renderNotHiddenAbilities() {        
         const renderItem = ({item}) => {
             if (item.is_hidden == true) {
